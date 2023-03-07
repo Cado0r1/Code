@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\oliver.willis.297_ac\\Desktop\\Code\\C#SnakeProject\\app\\app.csproj",
+      "projectUniqueName": "C:\\Users\\oliver.willis.297_ac\\Documents\\GitHub\\Code\\C#SnakeProject\\app\\app.csproj",
       "projectName": "app",
-      "projectPath": "C:\\Users\\oliver.willis.297_ac\\Desktop\\Code\\C#SnakeProject\\app\\app.csproj",
+      "projectPath": "C:\\Users\\oliver.willis.297_ac\\Documents\\GitHub\\Code\\C#SnakeProject\\app\\app.csproj",
       "packagesPath": "C:\\Users\\oliver.willis.297_ac\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\oliver.willis.297_ac\\Desktop\\Code\\C#SnakeProject\\app\\obj\\",
+      "outputPath": "C:\\Users\\oliver.willis.297_ac\\Documents\\GitHub\\Code\\C#SnakeProject\\app\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\oliver.willis.297_ac\\AppData\\Roaming\\NuGet\\NuGet.Config"

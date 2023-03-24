@@ -40,7 +40,7 @@ def find_available_move(Board):
                 
 
 def MiniMax(MiniMax_Board, MiniMax_Turn):
-    if MiniMaxWin(MiniMax_Board, MiniMax_Turn) == (10 or -10) or  find_available_move(MiniMax_Board) == 0:
+    if MiniMaxWin(MiniMax_Board, MiniMax_Turn) == ((10 - MiniMax_Turn) or (MiniMax_Turn - 10)) or  find_available_move(MiniMax_Board) == 0:
         return Score
     Score = []
     Score_Reference = []

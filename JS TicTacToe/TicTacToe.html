@@ -6,12 +6,24 @@
     <link rel="stylesheet" href="TicTacToe.css">
   </head>
   <body>
-    <p id="turn_num" >Player Turn: X</p>
+    <p id="turn_num" >Player Turn: ...</p>
+    <div id = 'options'>
+      <div id ='select_turn'>
+        <label>Choose starter player:</label> 
+        <select id = 'turn_selector'> 
+          <option value="Random">Random</option> 
+          <option value="X">X</option> 
+          <option value="O">O</option> 
+      </select>
+      </div>
+      <button id="start_game" onclick=StartGame()>Start Game</button>
+      <button id="reset" onclick=Reset()>Reset</button>
+    </div>
     <table>
       <tr>
         <td type = 'Button' id="1" onclick= pressed(this.id)></td>
         <td type = 'Button' id="2" onclick= pressed(this.id)></td>
-        <td type = 'Button' id="3" onclick= pressed(this.id)></td>
+        <td type = 'Button' id="3" onclick= pressed(this.id)></td
       </tr>
       <tr>
         <td type = 'Button' id="4" onclick= pressed(this.id)></td>

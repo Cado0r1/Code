@@ -39,14 +39,19 @@ td{
 }
 
 #evalbar{
-    height:780px;
-    width:25px;
-    background: linear-gradient(180deg,rgb(138, 138, 138) 0%, rgb(138, 138, 138) 30%,white 30%, white 100%);
+    line-height: 780px;
+    width:50px;
+    background: linear-gradient(180deg,rgb(138, 138, 138) 0%, rgb(138, 138, 138) 50%,white 50%, white 100%);
     -webkit-transform: translate(-50%,-50%);
     transform: translate(-50%,-50%);
     position:absolute;
     top: 50%;
-    left: 26.5%;
+    left: 25%;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: xx-large;
+    font-family: Arial, Helvetica, sans-serif; 
+    -webkit-text-stroke: 1.3px black;
 }
 
 #BlackTimer{

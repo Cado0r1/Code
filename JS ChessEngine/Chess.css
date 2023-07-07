@@ -1,0 +1,81 @@
+@keyframes gradient{
+    0% {background-color: rgb(193, 226, 231)}
+    20% {background-color: rgb(215, 226, 184);}
+    40% {background-color: rgb(221, 169, 162);}
+    60% {background-color: rgb(216, 162, 180);}
+    80% {background-color: rgb(181, 173, 223);}
+    100% {background-color: rgb(193, 226, 231)}
+}
+body {
+    background-color: rgb(193, 226, 231);
+    animation-name: gradient;
+    animation-duration: 60s;
+    animation-iteration-count: infinite;
+}
+
+table{
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+td{
+    height: 100px;
+    width: 100px;
+    text-align: center;
+    font-size: 70px;
+    user-select: none;
+}
+
+.white{
+    background-color: rgb(255, 255, 255);
+}
+.black{
+    background-color: rgb(138, 138, 138);
+}
+
+#evalbar{
+    height:780px;
+    width:25px;
+    background: linear-gradient(180deg,rgb(138, 138, 138) 0%, rgb(138, 138, 138) 30%,white 30%, white 100%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    position:absolute;
+    top: 50%;
+    left: 26.5%;
+}
+
+#BlackTimer{
+    width: 100px;
+    background-color: rgb(138, 138, 138);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    position: absolute;
+    top: 5%;
+    left: 68.6%;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: xx-large;
+    line-height: 50px;
+    font-family: Arial, Helvetica, sans-serif; 
+    user-select: none;
+}
+#WhiteTimer{
+    width: 100px;
+    background-color: white;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    position: absolute;
+    top: 95.2%;
+    left: 68.6%;
+    color: black;
+    text-align: center;
+    font-size: xx-large;
+    line-height: 50px;
+    font-family: Arial, Helvetica, sans-serif; 
+    user-select: none;
+}

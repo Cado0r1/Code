@@ -1,6 +1,6 @@
 import {earlygamePST, endgamePST} from './PSTs.js';
 console.log(earlygamePST);
-console.log(endgamePST);
+//console.log(endgamePST);
 
 var turn = 1;
 const WPieces = ['♙','♖','♘','♗','♔','♕'];

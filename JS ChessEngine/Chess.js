@@ -1,6 +1,6 @@
 import {earlygamePST, endgamePST} from './PSTs.js';
 console.log(earlygamePST);
-//console.log(endgamePST);
+console.log(endgamePST);
 
 var turn = 1;
 const WPieces = ['♙','♖','♘','♗','♔','♕'];
@@ -133,6 +133,10 @@ var WKingRank = 7
 var WKingFile = 4
 var BKingRank = 0
 var BKingFile = 4
+var PreWKingRank = 7
+var PreWKingFile = 4
+var PreBKingRank = 0
+var PreBKingFile = 4
 
 var Board = [
     ['','','','','','','',''],
@@ -264,7 +268,7 @@ function flipTable(){
     BoardDirection = false;
 }
 
-function WPawnMoves(Board, piece, rank, file){
+function WPawnMoves(Board, piece, rank, file, isVisualising){
     var PossibleMoves = [];
     try{
     if(piece.moves == 0){
@@ -316,11 +320,13 @@ function WPawnMoves(Board, piece, rank, file){
     catch{
         console.log('no en passant available here')
     }
-    VisualiseMoves(PossibleMoves, rank, file);
+    if(isVisualising){
+        VisualiseMoves(PossibleMoves, rank, file);
+    }
     return PossibleMoves;
 }
 
-function BPawnMoves(Board, piece, rank, file){
+function BPawnMoves(Board, piece, rank, file, isVisualising){
     var PossibleMoves = [];
     try{
         if(piece.moves == 0){
@@ -374,7 +380,9 @@ function BPawnMoves(Board, piece, rank, file){
     catch{
         console.log('no en passant available here')
     }
-    VisualiseMoves(PossibleMoves, rank, file);
+    if(isVisualising){
+        VisualiseMoves(PossibleMoves, rank, file);
+    }
     return PossibleMoves;
 }
 
@@ -666,9 +674,9 @@ function GetAvailableMoves(id,Board){
     if(piece != undefined){
         switch(piece.pieceType){
             case 'WPawn':
-                return(WPawnMoves(Board, piece, rank, file));
+                return(WPawnMoves(Board, piece, rank, file, true));
             case 'BPawn':
-                return(BPawnMoves(Board, piece, rank, file));
+                return(BPawnMoves(Board, piece, rank, file, true));
             case 'Rook':
                 return(RookMoves(Board, piece, rank, file, true));
             case 'Knight':
@@ -718,21 +726,23 @@ function MakeMove(id){
             Board[rank][file+1] = '';
             Board[rank][file-1] = r;
             Board[rank][file-1].CanCastle = false;
-            piece.CanCastle = false;
         }
         else if((rank == 0 || rank == 7) && (file == 2) && piece.CanCastle == true){
             var r = Board[rank][file-2]
             Board[rank][file-2] = '';
             Board[rank][file+1] = r;
             Board[rank][file+1].CanCastle = false;
-            piece.CanCastle = false;
         }
         piece.CanCastle = false;
         if(piece.colour == 'W'){
+            PreWKingRank = WKingRank;
+            PreWKingFile = WKingFile;
             WKingRank = rank;
             WKingFile = file;
         }
         else{
+            PreBKingRank = BKingRank;
+            PreBKingFile = BKingFile;
             BKingRank = rank;
             BKingFile = file;
         }
@@ -740,6 +750,16 @@ function MakeMove(id){
     if(CheckCheck(rank,file)){
         Board = JSON.parse(JSON.stringify(BoardCopy));
         UpdatePieceCollections();
+        if(piece.pieceType == 'King'){
+            if(piece.colour == 'W'){
+                WKingRank = PreWKingRank;
+                WKingFile = PreWKingFile;
+            }
+            else{
+                BKingRank = PreBKingRank;
+                BKingFile = PreBKingFile;
+            }
+        }
         return
     }
     console.log(Board);
@@ -822,11 +842,13 @@ function CheckCheck(rank,file){
         var KingRank = WKingRank;
         var KingFile = WKingFile;
         var oppColour = 'B'
+        var pawn = 'WPawn'
     }
     else{
         var KingRank = BKingRank;
         var KingFile = BKingFile;
         var oppColour = 'W'
+        var pawn = 'BPawn'
     }
     // Check for each piece as the piece from the king pos, etc check knight moves from king pos and check if the opp knight is in the possible moves.
     var PossibleBishopMoves = BishopMoves(Board,Board[rank][file],KingRank,KingFile, false);
@@ -845,6 +867,22 @@ function CheckCheck(rank,file){
     for(let i = 0;i<PossibleKnightMoves.length;i++){
         if(Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]] != '' && Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]].pieceType == 'Knight'&& Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]].colour == oppColour){ 
             return true;
+        }
+    }
+    if(pawn = 'WPawn'){
+        var PossibleWPawnMoves = WPawnMoves(Board,Board[rank][file],KingRank,KingFile, false)
+        for(let i = 0;i<PossibleWPawnMoves.length;i++){
+            if(Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]] != '' && Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]].pieceType == 'BPawn'){ 
+                return true;
+            }
+        }
+    }
+    else{
+        var PossibleBPawnMoves = BPawnMoves(Board,Board[rank][file],KingRank,KingFile, false)
+        for(let i = 0;i<PossibleBPawnMoves.length;i++){
+            if(Board[PossibleBPawnMoves[i][0]][PossibleBPawnMoves[i][1]] != '' && Board[PossibleBPawnMoves[i][0]][PossibleBPawnMoves[i][1]].pieceType == 'WPawn'){ 
+                return true;
+            }
         }
     }
     return false;

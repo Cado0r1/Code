@@ -4,7 +4,8 @@ console.log(endgamePST);
 
 var turn = 1;
 const WPieces = ['♙','♖','♘','♗','♔','♕'];
-const BPieces = ['♟','♜','♞','♝','♚','♛']
+const BPieces = ['♟','♜','♞','♝','♚','♛'];
+var start_timer = false
 
 function GenerateBoard(){
     let t = 1;
@@ -23,11 +24,13 @@ function GenerateBoard(){
                     if(turn % 2 === 0){
                         if(BPieces.includes(selected.innerHTML)){
                             MakeMove(tile.id)
+                            startWorker()
                         }
                     }
                     else{
                         if(WPieces.includes(selected.innerHTML)){
                             MakeMove(tile.id)
+                            stopWorker()
                         }
                     }
                 }
@@ -944,4 +947,28 @@ function Game(){
     console.log(Board);
 }
 Game();
+var w
+var time
+function startWorker(){
+    w = new Worker('WhiteTimer.js');
+    w.addEventListener('message', function(event) {
+      document.getElementById('WhiteTimer').innerHTML = event.data;
+        time = event.data
+
+    }
+    );
+    if(document.getElementById('WhiteTimer').innerHTML == '10:00'){
+        w.postMessage('10:00')
+    }
+    else{
+        w.postMessage(time)
+    }
+}
+
+function stopWorker(){
+    if(w!= undefined){
+        w.terminate();
+        w = undefined;
+    }
+}
 //flipTable();

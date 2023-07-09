@@ -13,21 +13,30 @@ body {
     animation-iteration-count: infinite;
 }
 
+#flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#Board{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
 table{
-    -webkit-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
-    position: absolute;
-    top: 50%;
-    left: 50%;
     border-collapse: collapse;
     border-spacing: 0px;
+    height: 640px;
+    margin:10px;
 }
 
 td{
-    height: 100px;
-    width: 100px;
+    height: 80px;
+    width: 80px;
     text-align: center;
-    font-size: 70px;
+    font-size: 50px;
     user-select: none;
 }
 
@@ -39,48 +48,56 @@ td{
 }
 
 #evalbar{
-    line-height: 780px;
+    height: 600px;
     width:50px;
     background: linear-gradient(180deg,rgb(138, 138, 138) 0%, rgb(138, 138, 138) 50%,white 50%, white 100%);
-    -webkit-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
-    position:absolute;
-    top: 50%;
-    left: 25%;
     color: rgb(255, 255, 255);
     text-align: center;
     font-size: xx-large;
     font-family: Arial, Helvetica, sans-serif; 
     -webkit-text-stroke: 1.3px black;
+    margin:10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#flip{
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    margin:10px;
 }
 
 #BlackTimer{
-    width: 100px;
+    width: 80px;
+    height: 45px;
+    line-height: 40px;
     background-color: rgb(138, 138, 138);
-    -webkit-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
-    position: absolute;
-    top: 5%;
-    left: 68.6%;
     color: rgb(255, 255, 255);
     text-align: center;
     font-size: xx-large;
-    line-height: 50px;
     font-family: Arial, Helvetica, sans-serif; 
     user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-right: 10px;
 }
 #WhiteTimer{
-    width: 100px;
+    width: 80px;
+    height: 45px;
+    line-height: 40px;
     background-color: white;
-    -webkit-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
-    position: absolute;
-    top: 95.2%;
-    left: 68.6%;
     color: black;
     text-align: center;
     font-size: xx-large;
-    line-height: 50px;
     font-family: Arial, Helvetica, sans-serif; 
     user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-right: 10px;
 }

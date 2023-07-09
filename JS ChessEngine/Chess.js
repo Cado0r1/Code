@@ -1002,3 +1002,15 @@ function stopBlackTimer(){
     }
 }
 //flipTable();
+var flip = document.getElementById('flip');
+document.getElementById('Board').style.flexDirection = 'column'
+flip.setAttribute('type','Button');
+flip.onclick = function(){
+    flipTable();
+    if(document.getElementById('Board').style.flexDirection == 'column'){
+        document.getElementById('Board').style.flexDirection = 'column-reverse'
+    }
+    else{
+        document.getElementById('Board').style.flexDirection = 'column'
+    }
+};

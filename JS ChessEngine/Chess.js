@@ -24,13 +24,11 @@ function GenerateBoard(){
                     if(turn % 2 === 0){
                         if(BPieces.includes(selected.innerHTML)){
                             MakeMove(tile.id)
-                            startWorker()
                         }
                     }
                     else{
                         if(WPieces.includes(selected.innerHTML)){
                             MakeMove(tile.id)
-                            stopWorker()
                         }
                     }
                 }
@@ -768,6 +766,14 @@ function MakeMove(id){
     console.log(Board);
     UpdatePieceCollections();
     UpdateDisplayBoard();
+    if(turn % 2 == 0){
+        startWhiteTimer()
+        stopBlackTimer()
+    }
+    else{
+        startBlackTimer()
+        stopWhiteTimer()
+    }
     turn++;
 }
 
@@ -948,12 +954,12 @@ function Game(){
 }
 Game();
 var w
-var time
-function startWorker(){
+var wtime
+function startWhiteTimer(){
     w = new Worker('WhiteTimer.js');
     w.addEventListener('message', function(event) {
       document.getElementById('WhiteTimer').innerHTML = event.data;
-        time = event.data
+        wtime = event.data
 
     }
     );
@@ -961,14 +967,38 @@ function startWorker(){
         w.postMessage('10:00')
     }
     else{
-        w.postMessage(time)
+        w.postMessage(wtime)
     }
 }
 
-function stopWorker(){
+function stopWhiteTimer(){
     if(w!= undefined){
         w.terminate();
         w = undefined;
+    }
+}
+var b
+var btime
+function startBlackTimer(){
+    b = new Worker('BlackTimer.js');
+    b.addEventListener('message', function(event) {
+      document.getElementById('BlackTimer').innerHTML = event.data;
+        btime = event.data
+
+    }
+    );
+    if(document.getElementById('BlackTimer').innerHTML == '10:00'){
+        b.postMessage('10:00')
+    }
+    else{
+        b.postMessage(btime)
+    }
+}
+
+function stopBlackTimer(){
+    if(b!= undefined){
+        b.terminate();
+        b = undefined;
     }
 }
 //flipTable();

@@ -250,22 +250,11 @@ class King {
     }
 }
 function flipTable(){
-    var table = document.querySelector('table');
-    var rows = table.rows;
-    var numRows = rows.length;
-    var reverseRows = [];
-
-    for(var i = numRows-1;i>=0;i--){
-        reverseRows.push(rows[i]);
+    Board = Board.reverse();
+    for(let i=0;i<Board.length;i++){
+        Board[i] = Board[i].reverse();
     }
-
-    while(table.firstChild){
-        table.removeChild(table.firstChild);
-    }
-
-    for(var i=0;i<numRows;i++){
-        table.appendChild(reverseRows[i]);
-    }
+    UpdateDisplayBoard();
     BoardDirection = false;
 }
 
@@ -761,6 +750,9 @@ function MakeMove(id){
                 BKingFile = PreBKingFile;
             }
         }
+        if(CheckCheckmate(piece.colour)){
+            Winner()
+        }
         return
     }
     console.log(Board);
@@ -895,6 +887,67 @@ function CheckCheck(rank,file){
         }
     }
     return false;
+}
+
+function CheckCheckmate(colour){
+    if(colour == 'W'){
+        var KingRank = WKingRank;
+        var KingFile = WKingFile;
+        var oppColour = 'B'
+        var pawn = 'WPawn'
+    }
+    else{
+        var KingRank = BKingRank;
+        var KingFile = BKingFile;
+        var oppColour = 'W'
+        var pawn = 'BPawn'
+    }
+    var Moves = KingMoves(Board, Board[KingRank][KingFile], KingRank, KingFile);
+    var MovesLength = Moves.length;
+    for(let i = 0; i<Moves.length;i++){
+        var PossibleBishopMoves = BishopMoves(Board,Board[KingRank][KingFile],Moves[i][0],Moves[i][1], false);
+        for(let i = 0;i<PossibleBishopMoves.length;i++){
+            if(Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]] != '' && (Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]].pieceType == 'Bishop' || Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]].pieceType == 'Queen')&& Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]].colour == oppColour){ 
+                MovesLength--;
+                break;
+            }
+        }
+        var PossibleRookMoves = RookMoves(Board,Board[KingRank][KingFile],Moves[i][0],Moves[i][1], false);
+        for(let i = 0;i<PossibleRookMoves.length;i++){
+            if(Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]] != '' && (Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]].pieceType == 'Rook' || Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]].pieceType == 'Queen')&& Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]].colour == oppColour){ 
+                MovesLength--;
+                break;
+            }
+        }
+        var PossibleKnightMoves = KnightMoves(Board,Board[KingRank][KingFile],Moves[i][0],Moves[i][1], false)
+        for(let i = 0;i<PossibleKnightMoves.length;i++){
+            if(Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]] != '' && Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]].pieceType == 'Knight'&& Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]].colour == oppColour){ 
+                MovesLength--;
+                break;
+            }
+        }
+        if(pawn = 'WPawn'){
+            var PossibleWPawnMoves = WPawnMoves(Board,Board[KingRank][KingFile],Moves[i][0],Moves[i][1], false)
+            for(let i = 0;i<PossibleWPawnMoves.length;i++){
+                if(Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]] != '' && Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]].pieceType == 'BPawn'){ 
+                    MovesLength--;
+                    break;
+                }
+            }
+        }
+        else{
+            var PossibleBPawnMoves = BPawnMoves(Board,Board[KingRank][KingFile],Moves[i][0],Moves[i][1], false)
+            for(let i = 0;i<PossibleBPawnMoves.length;i++){
+                if(Board[PossibleBPawnMoves[i][0]][PossibleBPawnMoves[i][1]] != '' && Board[PossibleBPawnMoves[i][0]][PossibleBPawnMoves[i][1]].pieceType == 'WPawn'){ 
+                    MovesLength--;
+                    break;
+                }
+            }
+        }
+    }
+    if(MovesLength <= 0){
+        alert('Checkmate');
+    }
 }
     
 

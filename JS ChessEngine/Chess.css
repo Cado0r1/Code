@@ -17,6 +17,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 98vh;
 }
 
 #Board{
@@ -28,15 +29,14 @@ body {
 table{
     border-collapse: collapse;
     border-spacing: 0px;
-    height: 640px;
     margin:10px;
 }
 
 td{
-    height: 80px;
-    width: 80px;
+    height: 10vh;
+    width: 10vh;
     text-align: center;
-    font-size: 50px;
+    font-size: 7vh;
     user-select: none;
 }
 
@@ -48,12 +48,12 @@ td{
 }
 
 #evalbar{
-    height: 600px;
-    width:50px;
+    height: 70vh;
+    width:7vh;
     background: linear-gradient(180deg,rgb(138, 138, 138) 0%, rgb(138, 138, 138) 50%,white 50%, white 100%);
     color: rgb(255, 255, 255);
     text-align: center;
-    font-size: xx-large;
+    font-size: 5vh;
     font-family: Arial, Helvetica, sans-serif; 
     -webkit-text-stroke: 1.3px black;
     margin:10px;
@@ -70,13 +70,13 @@ td{
 }
 
 #BlackTimer{
-    width: 80px;
-    height: 45px;
-    line-height: 40px;
+    width: 10vh;
+    height: 5vh;
+    line-height: 5vh;
     background-color: rgb(138, 138, 138);
     color: rgb(255, 255, 255);
     text-align: center;
-    font-size: xx-large;
+    font-size: 4vh;
     font-family: Arial, Helvetica, sans-serif; 
     user-select: none;
     display: flex;
@@ -86,13 +86,13 @@ td{
     margin-right: 10px;
 }
 #WhiteTimer{
-    width: 80px;
-    height: 45px;
-    line-height: 40px;
+    width: 10vh;
+    height: 5vh;
+    line-height: 5vh;
     background-color: white;
     color: black;
     text-align: center;
-    font-size: xx-large;
+    font-size: 4vh;
     font-family: Arial, Helvetica, sans-serif; 
     user-select: none;
     display: flex;

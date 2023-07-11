@@ -56,47 +56,6 @@ function GenerateBoard(){
     }   
 }
 
-function WhiteBoardSetup(){
-    var pawns = ['71','72','73','74','75','76','77','78'] // pawn ids
-    var rooks = ['81','88'] // rook ids
-    var knights = ['82','87'] // knight ids
-    var bishops = ['83','86'] // bishop ids
-    for(let i =0;i<8;i++){
-        document.getElementById(pawns[i]).innerHTML = '♙'
-    }
-    for(let i =0;i<2;i++){
-        document.getElementById(rooks[i]).innerHTML = '♖'
-    }
-    for(let i =0;i<2;i++){
-        document.getElementById(knights[i]).innerHTML = '♘'
-    }
-    for(let i =0;i<2;i++){
-        document.getElementById(bishops[i]).innerHTML = '♗'
-    }
-    document.getElementById('85').innerHTML = '♔'
-    document.getElementById('84').innerHTML = '♕'
-}
-
-function BlackBoardSetup(){
-    var pawns = ['21','22','23','24','25','26','27','28'] // pawn ids
-    var rooks = ['11','18'] // rook ids
-    var knights = ['12','17'] // knight ids
-    var bishops = ['13','16'] // bishop ids
-    for(let i =0;i<8;i++){
-        document.getElementById(pawns[i]).innerHTML = '♟'
-    }
-    for(let i =0;i<2;i++){
-        document.getElementById(rooks[i]).innerHTML = '♜'
-    }
-    for(let i =0;i<2;i++){
-        document.getElementById(knights[i]).innerHTML = '♞'
-    }
-    for(let i =0;i<2;i++){
-        document.getElementById(bishops[i]).innerHTML = '♝'
-    }
-    document.getElementById('15').innerHTML = '♚'
-    document.getElementById('14').innerHTML = '♛'
-}
 
 function EvalBar(){
     var WTotal = 0
@@ -119,8 +78,6 @@ function EvalBar(){
 
 //Displaying elements to user
 GenerateBoard()
-WhiteBoardSetup()
-BlackBoardSetup()
 
 //declaring global variables
 
@@ -138,6 +95,9 @@ var PreWKingRank = 7
 var PreWKingFile = 4
 var PreBKingRank = 0
 var PreBKingFile = 4
+var CheckingPiece
+var CheckingRank
+var CheckingFile
 
 var Board = [
     ['','','','','','','',''],
@@ -255,60 +215,137 @@ function flipTable(){
         Board[i] = Board[i].reverse();
     }
     UpdateDisplayBoard();
-    BoardDirection = false;
+    if(BoardDirection==true){
+        BoardDirection = false;
+    }
+    else{
+        BoardDirection = true;
+    }
+    UpdateKingPos();
+}
+
+function UpdateKingPos(){
+    for (let i = 0 ; i < 8 ; i ++){
+        for (let j = 0 ; j < 8 ; j ++){
+            if(Board[i][j] != '' && Board[i][j].pieceType == 'King'){
+                if(Board[i][j].colour == 'W'){
+                    WKingRank = i;
+                    WKingFile = j;
+                }
+                else{
+                    BKingRank = i;
+                    BKingFile = j;
+                }
+            }
+        }
+    }
 }
 
 function WPawnMoves(Board, piece, rank, file, isVisualising){
     var PossibleMoves = [];
-    try{
-    if(piece.moves == 0){
-            if(Board[rank-2][file] == '' & Board[rank-1][file] == ''){
-                PossibleMoves.push([rank-2,file]);
+    if(BoardDirection == true){
+        try{
+            if(piece.moves == 0){
+                    if(Board[rank-2][file] == '' & Board[rank-1][file] == ''){
+                        PossibleMoves.push([rank-2,file]);
+                    }
             }
-    }
-    }
-    catch{
-        console.log('pawn checking out of board');
-    }
-    try{
-        if(BlackPieces.includes(Board[rank-1][file+1])){
-            PossibleMoves.push([rank-1,file+1]);
+        }
+        catch{
+            console.log('pawn checking out of board');
+        }
+        try{
+            if(BlackPieces.includes(Board[rank-1][file+1])){
+                PossibleMoves.push([rank-1,file+1]);
+            }
+        }
+        catch (TypeError){
+            console.log('pawn checking out of board');
+        }
+        try{
+            if(BlackPieces.includes(Board[rank-1][file-1])){
+                PossibleMoves.push([rank-1,file-1]);
+            }
+        }
+        catch (TypeError){
+            console.log('pawn checking out of board');
+        }
+        try{
+            if(Board[rank-1][file] == ''){
+                PossibleMoves.push([rank-1,file])
+            }
+        }
+        catch{
+            console.log('pawn checking out of board');
+        }
+        try{
+            if(Board[rank][file-1].pieceType == 'BPawn' && Board[rank][file-1].CanBeEnPassanted == true){
+                PossibleMoves.push([rank-1,file-1])
+            }
+        }
+        catch{
+            console.log('no en passant available here')
+        }
+        try{
+            if(Board[rank][file+1].pieceType == 'BPawn' && Board[rank][file+1].CanBeEnPassanted == true){
+                PossibleMoves.push([rank-1,file+1])
+            }
+        }
+        catch{
+            console.log('no en passant available here')
         }
     }
-    catch (TypeError){
-        console.log('pawn checking out of board');
-    }
-    try{
-        if(BlackPieces.includes(Board[rank-1][file-1])){
-            PossibleMoves.push([rank-1,file-1]);
+    else{
+        try{
+            if(piece.moves == 0){
+                    if(Board[rank+2][file] == '' & Board[rank+1][file] == ''){
+                        PossibleMoves.push([rank+2,file]);
+                    }
+            }
         }
-    }
-    catch (TypeError){
-        console.log('pawn checking out of board');
-    }
-    try{
-        if(Board[rank-1][file] == ''){
-            PossibleMoves.push([rank-1,file])
+        catch{
+            console.log('pawn checking out of board');
         }
-    }
-    catch{
-        console.log('pawn checking out of board');
-    }
-    try{
-        if(Board[rank][file-1].pieceType == 'BPawn' && Board[rank][file-1].CanBeEnPassanted == true){
-            PossibleMoves.push([rank-1,file-1])
+        try{
+            if(BlackPieces.includes(Board[rank+1][file-1])){
+                PossibleMoves.push([rank+1,file-1]);
+            }
         }
-    }
-    catch{
-        console.log('no en passant available here')
-    }
-    try{
-        if(Board[rank][file+1].pieceType == 'BPawn' && Board[rank][file+1].CanBeEnPassanted == true){
-            PossibleMoves.push([rank-1,file+1])
+        catch (TypeError){
+            console.log('pawn checking out of board');
         }
-    }
-    catch{
-        console.log('no en passant available here')
+        try{
+            if(BlackPieces.includes(Board[rank+1][file+1])){
+                PossibleMoves.push([rank+1,file+1]);
+            }
+        }
+        catch (TypeError){
+            console.log('pawn checking out of board');
+        }
+        try{
+            if(Board[rank+1][file] == ''){
+                PossibleMoves.push([rank+1,file])
+            }
+        }
+        catch{
+            console.log('pawn checking out of board');
+        }
+        try{
+            if(Board[rank][file+1].pieceType == 'BPawn' && Board[rank][file+1].CanBeEnPassanted == true){
+                PossibleMoves.push([rank+1,file+1])
+            }
+        }
+        catch{
+            console.log('no en passant available here')
+        }
+        try{
+            if(Board[rank][file-1].pieceType == 'BPawn' && Board[rank][file-1].CanBeEnPassanted == true){
+                PossibleMoves.push([rank+1,file-1])
+            }
+        }
+        catch{
+            console.log('no en passant available here')
+        }
     }
     if(isVisualising){
         VisualiseMoves(PossibleMoves, rank, file);
@@ -318,57 +355,109 @@ function WPawnMoves(Board, piece, rank, file, isVisualising){
 
 function BPawnMoves(Board, piece, rank, file, isVisualising){
     var PossibleMoves = [];
-    try{
-        if(piece.moves == 0){
-                if(Board[rank+2][file] == '' & Board[rank+1][file] == ''){
-                    PossibleMoves.push([rank+2,file]);
-                }
+    if(BoardDirection == false){
+        try{
+            if(piece.moves == 0){
+                    if(Board[rank-2][file] == '' & Board[rank-1][file] == ''){
+                        PossibleMoves.push([rank-2,file]);
+                    }
+            }
         }
-    } 
-    catch (TypeError){
-        console.log('pawn checking out of board');
-    }
-    try
-    {   
-        if(WhitePieces.includes(Board[rank+1][file+1])){
-           PossibleMoves.push([rank+1,file+1]);
-        }   
-    }
-    catch (TypeError){
-        console.log('pawn checking out of board');
-    }
-    try
-    {
-        if(WhitePieces.includes(Board[rank+1][file-1])){
-        PossibleMoves.push([rank+1,file-1]);
+        catch{
+            console.log('pawn checking out of board');
+        }
+        try{
+            if(WhitePieces.includes(Board[rank-1][file+1])){
+                PossibleMoves.push([rank-1,file+1]);
+            }
+        }
+        catch (TypeError){
+            console.log('pawn checking out of board');
+        }
+        try{
+            if(WhitePieces.includes(Board[rank-1][file-1])){
+                PossibleMoves.push([rank-1,file-1]);
+            }
+        }
+        catch (TypeError){
+            console.log('pawn checking out of board');
+        }
+        try{
+            if(Board[rank-1][file] == ''){
+                PossibleMoves.push([rank-1,file])
+            }
+        }
+        catch{
+            console.log('pawn checking out of board');
+        }
+        try{
+            if(Board[rank][file-1].pieceType == 'WPawn' && Board[rank][file-1].CanBeEnPassanted == true){
+                PossibleMoves.push([rank-1,file-1])
+            }
+        }
+        catch{
+            console.log('no en passant available here')
+        }
+        try{
+            if(Board[rank][file+1].pieceType == 'WPawn' && Board[rank][file+1].CanBeEnPassanted == true){
+                PossibleMoves.push([rank-1,file+1])
+            }
+        }
+        catch{
+            console.log('no en passant available here')
         }
     }
-    catch (TypeError){
-        console.log('pawn checking out of board');
-    }
-    try{
-        if(Board[rank+1][file] == ''){
-            PossibleMoves.push([rank+1,file])
+    else{
+        try{
+            if(piece.moves == 0){
+                    if(Board[rank+2][file] == '' & Board[rank+1][file] == ''){
+                        PossibleMoves.push([rank+2,file]);
+                    }
+            }
         }
-    }
-    catch{
-        console.log('pawn checking out of board');
-    }
-    try{
-        if(Board[rank][file-1].pieceType == 'WPawn' && Board[rank][file-1].CanBeEnPassanted == true){
-            PossibleMoves.push([rank+1,file-1])
+        catch{
+            console.log('pawn checking out of board');
         }
-    }
-    catch{
-        console.log('no en passant available here')
-    }
-    try{
-        if(Board[rank][file+1].pieceType == 'WPawn' && Board[rank][file+1].CanBeEnPassanted == true){
-            PossibleMoves.push([rank+1,file+1])
+        try{
+            if(WhitePieces.includes(Board[rank+1][file-1])){
+                PossibleMoves.push([rank+1,file-1]);
+            }
         }
-    }
-    catch{
-        console.log('no en passant available here')
+        catch (TypeError){
+            console.log('pawn checking out of board');
+        }
+        try{
+            if(WhitePieces.includes(Board[rank+1][file+1])){
+                PossibleMoves.push([rank+1,file+1]);
+            }
+        }
+        catch (TypeError){
+            console.log('pawn checking out of board');
+        }
+        try{
+            if(Board[rank+1][file] == ''){
+                PossibleMoves.push([rank+1,file])
+            }
+        }
+        catch{
+            console.log('pawn checking out of board');
+        }
+        try{
+            if(Board[rank][file+1].pieceType == 'WPawn' && Board[rank][file+1].CanBeEnPassanted == true){
+                PossibleMoves.push([rank+1,file+1])
+            }
+        }
+        catch{
+            console.log('no en passant available here')
+        }
+        try{
+            if(Board[rank][file-1].pieceType == 'WPawn' && Board[rank][file-1].CanBeEnPassanted == true){
+                PossibleMoves.push([rank+1,file-1])
+            }
+        }
+        catch{
+            console.log('no en passant available here')
+        }
     }
     if(isVisualising){
         VisualiseMoves(PossibleMoves, rank, file);
@@ -607,7 +696,7 @@ function KingMoves(Board, piece,rank,file){
     return PossibleMoves;
 }
 
-function QueenMoves(Board, piece,rank,file){
+function QueenMoves(Board, piece,rank,file, isVisualising){
     let PossibleMoves = [];
     let Rookmoves = RookMoves(Board, piece,rank,file);
     let Bishopmoves = BishopMoves(Board, piece,rank,file);
@@ -617,7 +706,9 @@ function QueenMoves(Board, piece,rank,file){
     for(let i=0;i<Bishopmoves.length;i++){
         PossibleMoves.push(Bishopmoves[i]);
     }
-    VisualiseMoves(PossibleMoves, rank, file);
+    if(isVisualising){
+        VisualiseMoves(PossibleMoves, rank, file);
+    }
     return  PossibleMoves;
 }
 
@@ -674,7 +765,7 @@ function GetAvailableMoves(id,Board){
             case 'Bishop':
                 return(BishopMoves(Board, piece, rank, file, true));
             case 'Queen':
-                return(QueenMoves(Board, piece,rank,file))
+                return(QueenMoves(Board, piece,rank,file, true))
             case 'King':
                 return(KingMoves(Board, piece,rank,file))
         }
@@ -689,20 +780,30 @@ function MakeMove(id){
     var BoardCopy = JSON.parse(JSON.stringify(Board));
     if(piece.pieceType == 'WPawn' || piece.pieceType == 'BPawn'){
         piece.moves+=1
-        if(piece.pieceType == 'WPawn' && rank == 4 && piece.moves == 1){
+        if(piece.pieceType == 'WPawn' && (rank == 4 || rank == 3) && piece.moves == 1){
             piece.CanBeEnPassanted = true;
         }
-        else if(piece.pieceType == 'BPawn' && rank == 3 && piece.moves == 1){
+        else if(piece.pieceType == 'BPawn' && (rank == 4 || rank == 3) && piece.moves == 1){
             piece.CanBeEnPassanted = true;
         }
         else{
             piece.CanBeEnPassanted = false;
         }
-        if(Board[rank][file] == '' && BoardSelectedFile-1 != file && piece.pieceType == 'WPawn'){
-            Board[rank+1][file] = ''
+        if(BoardDirection == true){
+            if(Board[rank][file] == '' && BoardSelectedFile-1 != file && piece.pieceType == 'WPawn'){
+                Board[rank+1][file] = ''
+            }
+            else if(Board[rank][file] == '' && BoardSelectedFile-1 != file && piece.pieceType == 'BPawn'){
+                Board[rank-1][file] = ''
+            }
         }
-        else if(Board[rank][file] == '' && BoardSelectedFile-1 != file && piece.pieceType == 'BPawn'){
-            Board[rank-1][file] = ''
+        else{
+            if(Board[rank][file] == '' && BoardSelectedFile-1 != file && piece.pieceType == 'WPawn'){
+                Board[rank-1][file] = ''
+            }
+            else if(Board[rank][file] == '' && BoardSelectedFile-1 != file && piece.pieceType == 'BPawn'){
+                Board[rank+1][file] = ''
+            }
         }
     }
     Board[rank][file] = piece;
@@ -838,6 +939,90 @@ function UpdateDisplayBoard(){
     }
 }
 
+function CanCheckBeBlocked(rank,file,piece){
+    if(piece.colour == 'W'){
+        var KingRank = BKingRank;
+        var KingFile = BKingFile;
+    }
+    else{
+        var KingRank = WKingRank;
+        var KingFile = WKingFile;
+    }
+    var KingPos = [KingRank,KingFile]
+    var Moves
+    switch(piece.pieceType){
+        case 'WPawn':
+            Moves = (WPawnMoves(Board, piece, rank, file, false));
+        case 'BPawn':
+            Moves = (BPawnMoves(Board, piece, rank, file, false));
+        case 'Rook':
+            Moves = (RookMoves(Board, piece, rank, file, false));
+        case 'Knight':
+            Moves = (KnightMoves(Board, piece, rank, file, false));
+        case 'Bishop':
+            Moves = (BishopMoves(Board, piece, rank, file, false));
+        case 'Queen':
+            Moves = (QueenMoves(Board, piece,rank,file, false))
+    }
+    for(let i=0;i<Moves.length;i++){
+        if(Moves[i][0] == KingPos[0] && Moves[i][1] == KingPos[1]){
+            continue;
+        }
+        // filter down list to moves that result in check then cehck if those moves are attacked
+        if(IsAttacked(Moves[i][0],Moves[i][1],piece)){
+            return true
+        }
+    }
+    return false
+}
+
+function IsAttacked(rank,file,piece){
+    if(piece.colour == 'W'){
+        var oppColour = 'B'
+        var pawn = 'WPawn'
+    }
+    else{
+        var oppColour = 'W'
+        var pawn = 'BPawn'
+    }
+    // Check for each piece as the piece from the king pos, etc check knight moves from king pos and check if the opp knight is in the possible moves.
+    var PossibleBishopMoves = BishopMoves(Board,piece,rank,file, false);
+    for(let i = 0;i<PossibleBishopMoves.length;i++){
+        if(Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]] != '' && (Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]].pieceType == 'Bishop' || Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]].pieceType == 'Queen')&& Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]].colour == oppColour){ 
+            return true;
+        }
+    }
+    var PossibleRookMoves = RookMoves(Board,piece,rank,file, false);
+    for(let i = 0;i<PossibleRookMoves.length;i++){
+        if(Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]] != '' && (Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]].pieceType == 'Rook' || Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]].pieceType == 'Queen')&& Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]].colour == oppColour){ 
+            return true;
+        }
+    }
+    var PossibleKnightMoves = KnightMoves(Board,piece,rank,file, false)
+    for(let i = 0;i<PossibleKnightMoves.length;i++){
+        if(Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]] != '' && Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]].pieceType == 'Knight'&& Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]].colour == oppColour){ 
+            return true;
+        }
+    }
+    if(pawn = 'WPawn'){
+        var PossibleWPawnMoves = WPawnMoves(Board,piece,rank,file, false)
+        for(let i = 0;i<PossibleWPawnMoves.length;i++){
+            if(Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]] != '' && Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]].pieceType == 'BPawn'){ 
+                return true;
+            }
+        }
+    }
+    else{
+        var PossibleBPawnMoves = BPawnMoves(Board,piece,rank,file, false)
+        for(let i = 0;i<PossibleBPawnMoves.length;i++){
+            if(Board[PossibleBPawnMoves[i][0]][PossibleBPawnMoves[i][1]] != '' && Board[PossibleBPawnMoves[i][0]][PossibleBPawnMoves[i][1]].pieceType == 'WPawn'){ 
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 function CheckCheck(rank,file){
     if(Board[rank][file].colour == 'W'){
         var KingRank = WKingRank;
@@ -855,18 +1040,27 @@ function CheckCheck(rank,file){
     var PossibleBishopMoves = BishopMoves(Board,Board[rank][file],KingRank,KingFile, false);
     for(let i = 0;i<PossibleBishopMoves.length;i++){
         if(Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]] != '' && (Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]].pieceType == 'Bishop' || Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]].pieceType == 'Queen')&& Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]].colour == oppColour){ 
+            CheckingPiece = Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]]
+            CheckingRank = PossibleBishopMoves[i][0]
+            CheckingFile = PossibleBishopMoves[i][1]
             return true;
         }
     }
     var PossibleRookMoves = RookMoves(Board,Board[rank][file],KingRank,KingFile, false);
     for(let i = 0;i<PossibleRookMoves.length;i++){
         if(Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]] != '' && (Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]].pieceType == 'Rook' || Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]].pieceType == 'Queen')&& Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]].colour == oppColour){ 
+            CheckingPiece = Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]]
+            CheckingRank = PossibleRookMoves[i][0]
+            CheckingFile = PossibleRookMoves[i][1]
             return true;
         }
     }
     var PossibleKnightMoves = KnightMoves(Board,Board[rank][file],KingRank,KingFile, false)
     for(let i = 0;i<PossibleKnightMoves.length;i++){
         if(Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]] != '' && Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]].pieceType == 'Knight'&& Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]].colour == oppColour){ 
+            CheckingPiece = Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]]
+            CheckingRank = PossibleKnightMoves[i][0]
+            CheckingFile = PossibleKnightMoves[i][1]
             return true;
         }
     }
@@ -874,6 +1068,9 @@ function CheckCheck(rank,file){
         var PossibleWPawnMoves = WPawnMoves(Board,Board[rank][file],KingRank,KingFile, false)
         for(let i = 0;i<PossibleWPawnMoves.length;i++){
             if(Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]] != '' && Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]].pieceType == 'BPawn'){ 
+                CheckingPiece = Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]]
+                CheckingRank = PossibleWPawnMoves[i][0]
+                CheckingFile = PossibleWPawnMoves[i][1]
                 return true;
             }
         }
@@ -882,6 +1079,9 @@ function CheckCheck(rank,file){
         var PossibleBPawnMoves = BPawnMoves(Board,Board[rank][file],KingRank,KingFile, false)
         for(let i = 0;i<PossibleBPawnMoves.length;i++){
             if(Board[PossibleBPawnMoves[i][0]][PossibleBPawnMoves[i][1]] != '' && Board[PossibleBPawnMoves[i][0]][PossibleBPawnMoves[i][1]].pieceType == 'WPawn'){ 
+                CheckingPiece = Board[PossibleBPawnMoves[i][0]][PossibleBPawnMoves[i][1]]
+                CheckingRank = PossibleBPawnMoves[i][0]
+                CheckingFile = PossibleBPawnMoves[i][1]
                 return true;
             }
         }
@@ -946,7 +1146,12 @@ function CheckCheckmate(colour){
         }
     }
     if(MovesLength <= 0){
-        alert('Checkmate');
+        if(IsAttacked(CheckingRank,CheckingFile,CheckingPiece) || CanCheckBeBlocked(CheckingRank,CheckingFile,CheckingPiece)){
+            return false
+        }
+        else{
+            return true
+        }
     }
 }
     
@@ -1005,7 +1210,6 @@ function Game(){
     Board = Board.reverse();
     console.log(Board);
 }
-Game();
 var w
 var wtime
 function startWhiteTimer(){
@@ -1067,3 +1271,6 @@ flip.onclick = function(){
         document.getElementById('Board').style.flexDirection = 'column'
     }
 };
+
+Game();
+UpdateDisplayBoard();

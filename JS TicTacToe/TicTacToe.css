@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Raleway-ExtraLight';
+  src: url(Raleway-Light.ttf);
+}
+
 body {
     background-color: darkblue;
     vertical-align:middle
@@ -8,7 +13,7 @@ body {
   p {
     color: whitesmoke;
     position:absolute;
-    top: 50px;
+    top: 40px;
     left: 50%;
     transform: translateX(-50%)
   }
@@ -20,18 +25,197 @@ body {
     height: 250px;
     width: 250px;
     font-size: 150px;
-    font-family: Arial, Helvetica, sans-serif;
-    text-shadow: -5px 5px rgb(89, 89, 214);
+    font-family: 'Raleway-ExtraLight';
+    -webkit-box-shadow: inset 0 0 30px #00f;
+    -moz-box-shadow: inset 0 0 30px #00f;
+    box-shadow: inset 0 0 30px #00f;
     user-select: none
   }
   table {
     position: relative;
     left: 50%;
-    transform: translateX(-50%) translateY(12.5%);
+    top: -70px;
+    transform: translateX(-50%);
     background-color: whitesmoke;
+    -webkit-box-shadow: 0 0 30px #00f;
+    box-shadow: 0 0 30px #00f;
   }
   td:hover {
     background-color: rgb(0, 15, 83);
   }
+  #select_turn{
+    position: relative;
+    margin: 10px;
+    top: auto;
+    left: auto;
+    color: whitesmoke;
+    height: 40px;
+    width: 150px;
+    text-align: center;
+    -webkit-box-shadow: inset 0 0 10px lightskyblue;
+    -moz-box-shadow: inset 0 0 10px lightskyblue;
+    box-shadow: inset 0 0 10px lightskyblue;
+    font-family: 'Raleway-ExtraLight';
+    border-style: solid;
+    border-color: white;
+    border-width: 1px;
+    -webkit-box-shadow: 0 0 30px #00f;
+    box-shadow: 0 0 30px #00f;
+  }
+  #turn_selector{
+    background-color: darkblue;
+    color: whitesmoke;
+    border: 1px;
+    font-family: 'Raleway-ExtraLight';
+  }
+  #select_difficulty{
+    position: relative;
+    margin: 10px;
+    top: -5px;
+    left: auto;
+    color: whitesmoke;
+    height: 40px;
+    width: 150px;
+    text-align: center;
+    -webkit-box-shadow: inset 0 0 10px lightskyblue;
+    -moz-box-shadow: inset 0 0 10px lightskyblue;
+    box-shadow: inset 0 0 10px lightskyblue;
+    font-family: 'Raleway-ExtraLight';
+    border-style: solid;
+    border-color: white;
+    border-width: 1px;
+    -webkit-box-shadow: 0 0 30px #00f;
+    box-shadow: 0 0 30px #00f;
+  }
+  #difficulty_selector{
+    background-color: darkblue;
+    color: whitesmoke;
+    border: 1px;
+    font-family: 'Raleway-ExtraLight';
+  }
+
+  #start_game{
+    position: relative;
+    margin: 10px;
+    top:-20px;
+    left: auto;
+    color: whitesmoke;
+    background-color: darkblue;
+    height: 40px;
+    width: 152px;
+    text-align: center;
+    -webkit-box-shadow: inset 0 0 10px lightskyblue;
+    -moz-box-shadow: inset 0 0 10px lightskyblue;
+    box-shadow: inset 0 0 10px lightskyblue;
+    font-family: 'Raleway-ExtraLight';
+    border-style: solid;
+    border-color: white;
+    border-width: 1px;
+    -webkit-box-shadow: 0 0 30px #00f;
+    box-shadow: 0 0 30px #00f;
+  }
+
+  #reset{
+    position: relative;
+    margin: 10px;
+    top: 25px;
+    left: -176px;
+    color: whitesmoke;
+    background-color: darkblue;
+    height: 40px;
+    width: 152px;
+    text-align: center;
+    -webkit-box-shadow: inset 0 0 10px lightskyblue;
+    -moz-box-shadow: inset 0 0 10px lightskyblue;
+    box-shadow: inset 0 0 10px lightskyblue;
+    font-family: 'Raleway-ExtraLight';
+    border-style: solid;
+    border-color: white;
+    border-width: 1px;
+    -webkit-box-shadow: 0 0 30px #00f;
+    box-shadow: 0 0 30px #00f;
+  }
+
+  #start_game:hover{
+    background-color: rgb(23, 50, 172);
+    cursor: pointer;
+  }
+
+  #turn_selector:hover{
+    background-color: rgb(23, 50, 172);
+    cursor: pointer;
+  }
+
+  #difficulty_selector:hover{
+    background-color: rgb(23, 50, 172);
+    cursor: pointer;
+  }
+
+  #turn_num{
+    font-family: 'Raleway-ExtraLight';
+  }
+
+  #reset:hover{
+    background-color: rgb(23, 50, 172);
+    cursor: pointer;
+  }
+  .redtextglow{
+    color: #fff;
+    text-shadow:
+    0 0 2px #f70505,
+    0 0 5px #f70505,
+    0 0 10px #f70505,
+    0 0 45px #f70505;
+    }
+  .greentextglow{
+    color: #fff;
+    text-shadow:
+    0 0 2px #49a51e,
+    0 0 5px #49a51e,
+    0 0 10px #49a51e,
+    0 0 45px #49a51e;
+    }
+  .bluetextglow{
+    color: #fff;
+    text-shadow:
+    0 0 2px #19dcff,
+    0 0 5px #056779,
+    0 0 10px #19dcff,
+    0 0 45px #19dcff;
+    }
+
+  .fade-in{
+    font-size: xx-small;
+    opacity: 0.8;
+    animation-name: fade;
+    animation-duration: 0.75s;
+    animation-fill-mode: forwards;
+  }
+  @keyframes fade{
+    from{
+      opacity: 0.8;
+      font-size:xx-small;
+    }
+    to{
+      opacity: 1;
+      font-size: 150px;
+    }
+  }
+  .win{
+    animation-name: wincolour;
+    animation-duration: 3s;
+  }
+  @keyframes wincolour{
+    from{
+      background-color: #00f;
+      font-size: 150px;
+    }
+    to{
+      background-color: #32a9d8;
+      font-size: 150px;
+    }
+  }
+    
+  
 
   

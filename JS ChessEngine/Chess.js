@@ -851,10 +851,24 @@ function MakeMove(id){
                 BKingFile = PreBKingFile;
             }
         }
-        if(CheckCheckmate(piece.colour)){
-            Winner()
-        }
         return
+    }
+    if(piece.colour == 'W'){
+        var c = 'B'
+        var o = 'White'
+        var r = BKingRank
+        var f = BKingFile
+    }
+    else{
+        var c = 'W'
+        var o = 'Black'
+        var r = WKingRank
+        var f = WKingFile
+    }
+    if(CheckCheck(r,f)){
+        if(CheckCheckmate(c)){
+            winner(o)
+        }  
     }
     console.log(Board);
     UpdatePieceCollections();
@@ -1064,7 +1078,7 @@ function CheckCheck(rank,file){
             return true;
         }
     }
-    if(pawn = 'WPawn'){
+    if(pawn == 'WPawn'){
         var PossibleWPawnMoves = WPawnMoves(Board,Board[rank][file],KingRank,KingFile, false)
         for(let i = 0;i<PossibleWPawnMoves.length;i++){
             if(Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]] != '' && Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]].pieceType == 'BPawn'){ 
@@ -1146,7 +1160,7 @@ function CheckCheckmate(colour){
         }
     }
     if(MovesLength <= 0){
-        if(IsAttacked(CheckingRank,CheckingFile,CheckingPiece) || CanCheckBeBlocked(CheckingRank,CheckingFile,CheckingPiece)){
+        if(IsAttacked(CheckingRank,CheckingFile,CheckingPiece) && CanCheckBeBlocked(CheckingRank,CheckingFile,CheckingPiece)){
             return false
         }
         else{
@@ -1155,6 +1169,11 @@ function CheckCheckmate(colour){
     }
 }
     
+function winner(colour){
+    console.log(colour.toString())
+}
+
+
 
 function Game(){
 //White pieces

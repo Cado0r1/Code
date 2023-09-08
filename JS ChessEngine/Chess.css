@@ -9,7 +9,7 @@
 body {
     background-color: rgb(193, 226, 231);
     animation-name: gradient;
-    animation-duration: 60s;
+    animation-duration: 10s;
     animation-iteration-count: infinite;
 }
 
@@ -27,8 +27,7 @@ body {
 }
 
 table{
-    border-collapse: collapse;
-    border-spacing: 0px;
+    border-spacing:1px;
     margin:10px;
 }
 
@@ -40,11 +39,38 @@ td{
     user-select: none;
 }
 
+#Winner{
+    height: 10vh;
+    z-index: 9;
+    position: absolute;
+    background-color: #fff8f8;
+    left: 50px;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 35vh;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 25px;
+    border: 2px solid #000000;
+    padding: 20px;
+    text-align: center;
+    line-height: 10vh;
+    font-size: 50px;
+    font-family: sans-serif;
+}
+
 .white{
     background-color: rgb(255, 255, 255);
 }
 .black{
     background-color: rgb(138, 138, 138);
+}
+
+#ChessBoard{
+    margin: 10px;
+    background-color: black;
+    padding: 3px;
 }
 
 #evalbar{

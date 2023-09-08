@@ -61,10 +61,10 @@ function EvalBar(){
     var WTotal = 0
     var BTotal = 0
     for(let i =0;i<WhitePieces.length;i++){
-        WTotal = WTotal+WhitePieces[i].value
+        WTotal = WTotal+WhitePieces[i].value - 100000
     }
     for(let i =0;i<BlackPieces.length;i++){
-        BTotal = BTotal+BlackPieces[i].value
+        BTotal = BTotal+BlackPieces[i].value - 100000
     }
     var Total = WTotal+BTotal;
     var Percentage = (BTotal/Total)*100;
@@ -200,7 +200,7 @@ class King {
         Board[rank][file] = this;
         this.CanCastle = true;
         this.IsInCheck = false;
-        this.value = 0;
+        this.value = 100000;
         if(colour == 'W'){
             this.pieceText = '♔'
         }
@@ -865,11 +865,6 @@ function MakeMove(id){
         var r = WKingRank
         var f = WKingFile
     }
-    if(CheckCheck(r,f)){
-        if(CheckCheckmate(c)){
-            winner(o)
-        }  
-    }
     console.log(Board);
     UpdatePieceCollections();
     UpdateDisplayBoard();
@@ -880,6 +875,11 @@ function MakeMove(id){
     else{
         startBlackTimer()
         stopWhiteTimer()
+    }
+    if(CheckCheck(r,f)){
+        if(CheckCheckmate(c)){
+            winner(o)
+        }  
     }
     turn++;
 }
@@ -981,8 +981,9 @@ function CanCheckBeBlocked(rank,file,piece){
     for(let i=0;i<Moves.length;i++){
         if(Moves[i][0] == KingPos[0] && Moves[i][1] == KingPos[1]){
             continue;
+        
         }
-        // filter down list to moves that result in check then cehck if those moves are attacked
+        // filter down list to moves that result in check then check if those moves are attacked
         if(IsAttacked(Moves[i][0],Moves[i][1],piece)){
             return true
         }
@@ -1160,7 +1161,7 @@ function CheckCheckmate(colour){
         }
     }
     if(MovesLength <= 0){
-        if(IsAttacked(CheckingRank,CheckingFile,CheckingPiece) && CanCheckBeBlocked(CheckingRank,CheckingFile,CheckingPiece)){
+        if(IsAttacked(CheckingRank,CheckingFile,CheckingPiece) || CanCheckBeBlocked(CheckingRank,CheckingFile,CheckingPiece)){
             return false
         }
         else{
@@ -1170,7 +1171,8 @@ function CheckCheckmate(colour){
 }
     
 function winner(colour){
-    console.log(colour.toString())
+    document.getElementById('Winner').innerHTML = 'Winner: '+colour.toString()
+    document.getElementById('Winner').style.visibility = 'visible'
 }
 
 

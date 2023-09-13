@@ -838,7 +838,7 @@ function MakeMove(id){
             BKingFile = file;
         }
     }
-    if(CheckCheck(rank,file)){
+    if(CheckCheck(Board,rank,file)){
         Board = JSON.parse(JSON.stringify(BoardCopy));
         UpdatePieceCollections();
         if(piece.pieceType == 'King'){
@@ -876,7 +876,7 @@ function MakeMove(id){
         startBlackTimer()
         stopWhiteTimer()
     }
-    if(CheckCheck(r,f)){
+    if(CheckCheck(Board,r,f)){
         if(CheckCheckmate(c)){
             winner(o)
         }  
@@ -954,6 +954,7 @@ function UpdateDisplayBoard(){
 }
 
 function CanCheckBeBlocked(rank,file,piece){
+    var AMoves = [];
     if(piece.colour == 'W'){
         var KingRank = BKingRank;
         var KingFile = BKingFile;
@@ -983,9 +984,14 @@ function CanCheckBeBlocked(rank,file,piece){
             continue;
         
         }
-        // filter down list to moves that result in check then check if those moves are attacked
-        if(IsAttacked(Moves[i][0],Moves[i][1],piece)){
-            return true
+        else{
+            // filter down list to moves that result in check then check if those moves are attacked
+            var CheckBoard = JSON.parse(JSON.stringify(Board)) ;
+            CheckBoard[Moves[i][0]][Moves[i][1]] = piece;
+            CheckBoard[CheckingRank][CheckingFile] = '';
+            if(ACheckCheck(CheckBoard,Moves[i][0],Moves[i][1])){
+                AMoves.push(Moves);
+            }
         }
     }
     return false
@@ -1038,7 +1044,7 @@ function IsAttacked(rank,file,piece){
     return false;
 }
 
-function CheckCheck(rank,file){
+function CheckCheck(Board,rank,file){
     if(Board[rank][file].colour == 'W'){
         var KingRank = WKingRank;
         var KingFile = WKingFile;
@@ -1103,6 +1109,73 @@ function CheckCheck(rank,file){
     }
     return false;
 }
+
+function ACheckCheck(Board,rank,file){
+    if(Board[rank][file].colour == 'W'){
+        var KingRank = WKingRank;
+        var KingFile = WKingFile;
+        var oppColour = 'B'
+        var pawn = 'WPawn'
+    }
+    else{
+        var KingRank = BKingRank;
+        var KingFile = BKingFile;
+        var oppColour = 'W'
+        var pawn = 'BPawn'
+    }
+    // Check for each piece as the piece from the king pos, etc check knight moves from king pos and check if the opp knight is in the possible moves.
+    var PossibleBishopMoves = BishopMoves(Board,Board[rank][file],KingRank,KingFile, false);
+    for(let i = 0;i<PossibleBishopMoves.length;i++){
+        if(Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]] != '' && (Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]].pieceType == 'Bishop' || Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]].pieceType == 'Queen')&& Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]].colour == oppColour){ 
+            CheckingPiece = Board[PossibleBishopMoves[i][0]][PossibleBishopMoves[i][1]]
+            CheckingRank = PossibleBishopMoves[i][0]
+            CheckingFile = PossibleBishopMoves[i][1]
+            return true;
+        }
+    }
+    var PossibleRookMoves = RookMoves(Board,Board[rank][file],KingRank,KingFile, false);
+    for(let i = 0;i<PossibleRookMoves.length;i++){
+        if(Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]] != '' && (Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]].pieceType == 'Rook' || Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]].pieceType == 'Queen')&& Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]].colour == oppColour){ 
+            CheckingPiece = Board[PossibleRookMoves[i][0]][PossibleRookMoves[i][1]]
+            CheckingRank = PossibleRookMoves[i][0]
+            CheckingFile = PossibleRookMoves[i][1]
+            return true;
+        }
+    }
+    var PossibleKnightMoves = KnightMoves(Board,Board[rank][file],KingRank,KingFile, false)
+    for(let i = 0;i<PossibleKnightMoves.length;i++){
+        if(Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]] != '' && Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]].pieceType == 'Knight'&& Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]].colour == oppColour){ 
+            CheckingPiece = Board[PossibleKnightMoves[i][0]][PossibleKnightMoves[i][1]]
+            CheckingRank = PossibleKnightMoves[i][0]
+            CheckingFile = PossibleKnightMoves[i][1]
+            return true;
+        }
+    }
+    if(pawn == 'WPawn'){
+        var PossibleWPawnMoves = WPawnMoves(Board,Board[rank][file],KingRank,KingFile, false)
+        for(let i = 0;i<PossibleWPawnMoves.length;i++){
+            if(Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]] != '' && Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]].pieceType == 'BPawn'){ 
+                CheckingPiece = Board[PossibleWPawnMoves[i][0]][PossibleWPawnMoves[i][1]]
+                CheckingRank = PossibleWPawnMoves[i][0]
+                CheckingFile = PossibleWPawnMoves[i][1]
+                return true;
+            }
+        }
+    }
+    else{
+        var PossibleBPawnMoves = BPawnMoves(Board,Board[rank][file],KingRank,KingFile, false)
+        for(let i = 0;i<PossibleBPawnMoves.length;i++){
+            if(Board[PossibleBPawnMoves[i][0]][PossibleBPawnMoves[i][1]] != '' && Board[PossibleBPawnMoves[i][0]][PossibleBPawnMoves[i][1]].pieceType == 'WPawn'){ 
+                CheckingPiece = Board[PossibleBPawnMoves[i][0]][PossibleBPawnMoves[i][1]]
+                CheckingRank = PossibleBPawnMoves[i][0]
+                CheckingFile = PossibleBPawnMoves[i][1]
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 
 function CheckCheckmate(colour){
     if(colour == 'W'){

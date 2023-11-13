@@ -1,0 +1,117 @@
+@media screen and (max-width: 1024px){
+    #ChessBoard{
+        display: grid;
+        width:90%;
+        border:double;
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform: translate(-50%, -50%);
+        border-spacing:3px;
+        border-width:10px;
+        grid-template-columns: repeat(8,minmax(auto,1fr));
+        aspect-ratio: 1/1;
+    } 
+}
+@media screen and (min-width: 1024px){
+    #ChessBoard{
+        display: grid;
+        height:90%;
+        border:double;
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform: translate(-50%, -50%);
+        border-spacing:3px;
+        border-width:10px;
+        grid-template-columns: repeat(8,minmax(auto,1fr));
+        aspect-ratio: 1/1;
+    } 
+}
+
+.tile{
+    border:solid rgb(0, 0, 0);
+    border-width: 1px;
+    aspect-ratio: 1/1;
+}
+
+.tile:hover{
+    -webkit-box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.White{
+    background-color: rgb(255, 0, 0);
+}
+
+.Black{
+    background-color: rgb(252, 156, 156);
+}
+
+.highlight{
+    border-color: rgb(241, 181, 16);
+    border-style:ridge;
+    border-width: 1vh;
+}
+
+.P{
+    background-image: url('../Chess/assets/Chess_plt60.png');
+    background-size: contain;
+}
+
+.p{
+    background-image: url('../Chess/assets/Chess_pdt60.png');
+    background-size: contain;
+}
+
+.R{
+    background-image: url('../Chess/assets/Chess_rlt60.png');
+    background-size: contain;
+}
+
+.r{
+    background-image: url('../Chess/assets/Chess_rdt60.png');
+    background-size: contain;
+}
+
+.N{
+    background-image: url('../Chess/assets/Chess_nlt60.png');
+    background-size: contain;
+}
+
+.n{
+    background-image: url('../Chess/assets/Chess_ndt60.png');
+    background-size: contain;
+}
+
+.B{
+    background-image: url('../Chess/assets/Chess_blt60.png');
+    background-size: contain;
+}
+
+.b{
+    background-image: url('../Chess/assets/Chess_bdt60.png');
+    background-size: contain;
+}
+
+.Q{
+    background-image: url('../Chess/assets/Chess_qlt60.png');
+    background-size: contain;
+}
+
+.q{
+    background-image: url('../Chess/assets/Chess_qdt60.png');
+    background-size: contain;
+}
+
+.K{
+    background-image: url('../Chess/assets/Chess_klt60.png');
+    background-size: contain;
+}
+
+.k{
+    background-image: url('../Chess/assets/Chess_kdt60.png');
+    background-size: contain;
+}
+
